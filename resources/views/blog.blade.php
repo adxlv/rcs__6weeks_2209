@@ -5,8 +5,15 @@
 
 @section('content')
 
-    <h1>Šis ir mans contents</h1>
-    <p>Kaut kāds teksts</p>
+    <h1>Šis ir mans blogs</h1>
+
+    @foreach ($myblogs as $item)
+        <div class="card">
+            <h4>{{ $item->title }}</h4>
+            <p>{{ $item->body }}</p>
+            <span> {{ $item->created_at->diffForHumans() }} </span>
+        </div>
+    @endforeach
 
 @endsection
 

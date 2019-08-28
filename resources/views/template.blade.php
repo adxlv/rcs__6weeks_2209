@@ -1,8 +1,11 @@
 {{-- template.blade.php --}}
 <html>
     <head>
-        <title>Page Name</title>
+        <title>Page| </title>
         <link rel="stylesheet" href="/css/app.css">
+        <link rel="stylesheet" href="/css/mans.css">
+
+        <link rel="icon" href="/img/demo_icon.gif" type="image/gif" sizes="16x16">
     </head>
     <body>
         @include('partials.header')
