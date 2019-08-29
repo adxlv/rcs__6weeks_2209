@@ -1,5 +1,9 @@
 <?php
 
+use App\Post;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -21,22 +25,9 @@ Route::get('/test', function () {
 });
 
 Route::get('/blog', function () {
-    /*
-        $blogs = [
-            [
-                'id' => 1,
-                'title' => 'Mans blogs',
-                'body' => 'yolo'
-            ],
-            [
-                'id' => 2,
-                'title' => 'Mans blogs 2',
-                'body' => 'yolo otra bloga'
-            ],
-        ];
-    */
 
-    $blogs = \App\Post::take(4)
+    $blogs = Post::orderBy('created_at', 'desc')
+        ->take(4)
         ->get();
 
     return view('blog', [
@@ -44,15 +35,64 @@ Route::get('/blog', function () {
     ]);
 });
 
+
+Route::get('/blog/create', function() {
+
+    return view('create-blog');
+});
+
+Route::post('/blog/create/submit', function(Request $request) {
+    // request()
+
+
+
+
+    $validator = Validator::make($request->all(), [
+        'title'    => 'required|unique:posts|max:255',
+        'picture'  => 'required',
+        'body'     => 'required',
+        'excerpt'  => 'required',
+        'author'   => 'required',
+        'slug'     => 'required',
+    ]);
+
+    if ($validator->fails()) {
+        return redirect('blog/create')
+                    ->withErrors($validator)
+                    ->withInput();
+    }
+
+    $posted = $request->all();
+
+    $imagePath = $request->file('image')->store('public');
+
+    $post = new Post;
+
+    $post->title    = $posted['title'];
+    $post->picture  = $imagePath;
+    $post->body     = $posted['body'];
+    $post->excerpt  = $posted['excerpt'];
+    $post->author   = $posted['author'];
+    $post->slug     = $posted['slug'];
+
+    $post->save();
+
+    return redirect('/blog/create')->with('success', 'Profile updated!');
+});
+
+
 // /blog/2
 Route::get('/blog/{id}', function ($id) {
 
     // When id is in ID
-    $single_blog = \App\Post::find($id);
+    $single_blog = Post::find($id);
 
-    // When slug is in ID
-    // $single_blog = \App\Post::where('slug', $id)
-    //     ->first();
+    if ($single_blog == null) {
+        abort(404);
+    }
+
+    // When slug is in ULR
+    // $single_blog = ::where('slug', $id)->first();
 
     return view('single-blog', [
         'blog_post' => $single_blog,

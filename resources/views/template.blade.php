@@ -10,7 +10,7 @@
     <body>
         @include('partials.header')
 
-        <img src="/img/img.jpg" alt="">
+        {{-- <img src="/img/img.png" alt=""> --}}
 
         <div class="container">
             @yield('content')

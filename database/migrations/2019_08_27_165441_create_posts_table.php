@@ -17,12 +17,12 @@ class CreatePostsTable extends Migration
             $table->bigIncrements('id');
 
             $table->string('title');
-            $table->string('picture');
+            $table->string('picture')->nullable();
 
-            $table->text('body');
-            $table->text('excerpt');
+            $table->text('body')->nullable();
+            $table->text('excerpt')->nullable();
 
-            $table->string('author');
+            $table->string('author')->nullable();
             $table->string('slug');
 
             $table->timestamps();
