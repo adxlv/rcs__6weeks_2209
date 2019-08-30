@@ -16,13 +16,3 @@
     @endforeach
 
 @endsection
-
-@section('sidebar')
-
-    <ul>
-        <li>A</li>
-        <li>B</li>
-        <li>C</li>
-    </ul>
-
-@endsection

@@ -17,7 +17,8 @@
             <div class="col-6">
                 <div class="form-group">
                     <label for="formTitle">Title</label>
-                    <input id="formTitle" type="text" name="title" class="form-control @error('title') is-invalid @enderror">
+                    <input value="{{ @old('title') }}"
+                        id="formTitle" type="text" name="title" class="form-control @error('title') is-invalid @enderror">
                     @error('title')
                         <div class="alert alert-danger">{{ $message }}</div>
                     @enderror

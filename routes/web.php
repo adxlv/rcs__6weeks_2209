@@ -37,14 +37,11 @@ Route::get('/blog', function () {
 
 
 Route::get('/blog/create', function() {
-
     return view('create-blog');
-});
+})->middleware('auth');
 
 Route::post('/blog/create/submit', function(Request $request) {
     // request()
-
-
 
 
     $validator = Validator::make($request->all(), [
@@ -65,6 +62,7 @@ Route::post('/blog/create/submit', function(Request $request) {
     $posted = $request->all();
 
     $imagePath = $request->file('image')->store('public');
+    $imagePath = str_replace("public", "storage", $imagePath);
 
     $post = new Post;
 
@@ -78,7 +76,7 @@ Route::post('/blog/create/submit', function(Request $request) {
     $post->save();
 
     return redirect('/blog/create')->with('success', 'Profile updated!');
-});
+})->middleware('auth');
 
 
 // /blog/2
@@ -97,4 +95,18 @@ Route::get('/blog/{id}', function ($id) {
     return view('single-blog', [
         'blog_post' => $single_blog,
     ]);
+});
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
+
+
+Route::get('/api/blog', function () {
+
+    $blogs = Post::orderBy('created_at', 'desc')
+        ->take(4)
+        ->get();
+
+    return $blogs;
 });
